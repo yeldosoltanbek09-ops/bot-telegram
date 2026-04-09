@@ -116,20 +116,8 @@ def main() -> None:
     app.add_handler(CommandHandler("faq", faq_command))
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
 
-    webhook_url = os.getenv("WEBHOOK_URL")
-    port = int(os.getenv("PORT", "8080"))
-
-    if webhook_url:
-        logger.info("Starting webhook on port %d", port)
-        app.run_webhook(
-            listen="0.0.0.0",
-            port=port,
-            webhook_url=f"{webhook_url}/webhook",
-            url_path="/webhook",
-        )
-    else:
-        logger.info("Starting polling (local dev mode)")
-        app.run_polling(drop_pending_updates=True)
+    logger.info("Starting polling")
+    app.run_polling(drop_pending_updates=True)
 
 
 if __name__ == "__main__":
